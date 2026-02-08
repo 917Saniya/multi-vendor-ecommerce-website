@@ -1,0 +1,9 @@
+package com.project.ecommerce.repository;
+
+
+import com.project.ecommerce.model.Seller;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SellerRepository extends JpaRepository<Seller, Integer> {
+}
+
