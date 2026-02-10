@@ -16,10 +16,8 @@ public class Order {
 
     private Double totalAmount;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
-
-    // getters & setters
 
     public Integer getId() {
         return id;

@@ -1,43 +1,41 @@
 package com.project.ecommerce.controller;
 
-import com.project.ecommerce.model.Product;
-import com.project.ecommerce.service.ProductService;
+import com.project.ecommerce.model.Seller;
+import com.project.ecommerce.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/sellers")
 public class SellerController {
 
     @Autowired
-    private ProductService productService;
+    private SellerService sellerService;
 
-    // ADD PRODUCT
-    @PostMapping("/{sellerId}/add-product")
-    public Product addProduct(
-            @PathVariable int sellerId,
-            @RequestBody Product product) {
-
-        return productService.addProduct(product, sellerId);
+    @PostMapping
+    public ResponseEntity<Seller> createSeller(@RequestBody Seller seller) {
+        Seller savedSeller = sellerService.createSeller(seller);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSeller);
     }
 
-    // VIEW PRODUCTS BY SELLER
-    @GetMapping("/{sellerId}/products")
-    public List<Product> getSellerProducts(@PathVariable int sellerId) {
-        return productService.getProductsBySeller(sellerId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Seller> getSeller(@PathVariable int id) {
+        return sellerService.getSeller(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/products/{productId}")
-    public Product updateProduct(@PathVariable int productId,
-                                 @RequestBody Product product) {
-        return productService.updateProduct(productId, product);
+    @PutMapping("/{id}")
+    public ResponseEntity<Seller> updateSeller(@PathVariable int id, @RequestBody Seller sellerDetails) {
+        Seller updatedSeller = sellerService.updateSeller(id, sellerDetails);
+        return ResponseEntity.ok(updatedSeller);
     }
 
-    @DeleteMapping("/products/{productId}")
-    public String deleteProduct(@PathVariable int productId) {
-        productService.deleteProduct(productId);
-        return "Product deleted successfully";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSeller(@PathVariable int id) {
+        sellerService.deleteSeller(id);
+        return ResponseEntity.noContent().build();
     }
 }

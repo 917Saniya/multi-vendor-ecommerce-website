@@ -1,5 +1,6 @@
 package com.project.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,8 +15,9 @@ public class OrderItem {
     private Integer quantity;
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private Order order;
 
     // ===== GETTERS & SETTERS =====

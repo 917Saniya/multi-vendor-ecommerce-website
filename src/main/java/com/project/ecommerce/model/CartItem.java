@@ -7,40 +7,46 @@ public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    private Integer productId;
+    private Integer quantity;
+    private Double price;
 
     @ManyToOne
-    private Product product;
-
-    private int quantity;
-
-    @ManyToOne
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    // GETTERS & SETTERS
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Cart getCart() {

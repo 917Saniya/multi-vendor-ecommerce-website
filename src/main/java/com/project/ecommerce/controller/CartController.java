@@ -6,52 +6,25 @@ import com.project.ecommerce.model.Product;
 import com.project.ecommerce.repository.CartItemRepository;
 import com.project.ecommerce.repository.CartRepository;
 import com.project.ecommerce.repository.ProductRepository;
+import com.project.ecommerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-
     @Autowired
-    private CartRepository cartRepo;
+    private CartService cartService;
 
-    @Autowired
-    private ProductRepository productRepo;
-
-    @Autowired
-    private CartItemRepository cartItemRepo;
-
-    // Add to cart
-    @PostMapping("/add")
-    public Cart addToCart(
-            @RequestParam int userId,
-            @RequestParam int productId,
-            @RequestParam int quantity) {
-
-        Cart cart = cartRepo.findByUserId(userId);
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUserId(userId);
-            cartRepo.save(cart);
-        }
-
-        Product product = productRepo.findById(productId).orElseThrow();
-
-        CartItem item = new CartItem();
-        item.setProduct(product);
-        item.setQuantity(quantity);
-        item.setCart(cart);
-
-        cartItemRepo.save(item);
-        cart.getItems().add(item);
-
-        return cartRepo.save(cart);
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<Cart> createCart(@PathVariable int userId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartService.createCart(userId));
     }
 
-    // View cart
     @GetMapping("/{userId}")
-    public Cart viewCart(@PathVariable int userId) {
-        return cartRepo.findByUserId(userId);
+    public ResponseEntity<Cart> getCart(@PathVariable int userId) {
+        return ResponseEntity.ok(cartService.getCartByUserId(userId));
     }
 }

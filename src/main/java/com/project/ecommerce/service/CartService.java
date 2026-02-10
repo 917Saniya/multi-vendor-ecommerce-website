@@ -1,8 +1,10 @@
 package com.project.ecommerce.service;
 
+import com.project.ecommerce.model.Cart;
 import com.project.ecommerce.model.CartItem;
 import com.project.ecommerce.model.User;
 import com.project.ecommerce.repository.CartRepository;
+import com.project.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +12,25 @@ import java.util.List;
 
 @Service
 public class CartService {
-
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public CartItem addToCart(CartItem item) {
-        return CartRepository.save(item);
+    public Cart createCart(int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Cart cart = new Cart();
+        cart.setUser(user);
+        return cartRepository.save(cart);
     }
 
-    public List<CartItem> viewCart(User user) {
-        return cartRepository.findByUser(user);
-    }
-
-    public void removeFromCart(int cartItemId) {
-        cartRepository.deleteById(cartItemId);
+    public Cart getCartByUserId(int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return null;
     }
 }
+
 

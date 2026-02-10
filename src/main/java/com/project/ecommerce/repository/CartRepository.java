@@ -6,16 +6,11 @@ import com.project.ecommerce.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface CartRepository extends JpaRepository<Cart, Integer> {
-    static CartItem save(CartItem item) {
-        return null;
-    }
-
+public interface CartRepository extends JpaRepository<Cart, Integer > {
     Cart findByUserId(Integer userId);
 
-
-    List<Cart> findAllByUserId(Integer userId);
-
-    List<CartItem> findByUser(User user);
 }
+
+
