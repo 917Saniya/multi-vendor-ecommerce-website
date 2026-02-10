@@ -1,36 +1,54 @@
 package com.project.ecommerce.service;
 
-import com.project.ecommerce.model.Cart;
-import com.project.ecommerce.model.CartItem;
-import com.project.ecommerce.model.User;
-import com.project.ecommerce.repository.CartRepository;
-import com.project.ecommerce.repository.UserRepository;
+import com.project.ecommerce.model.*;
+import com.project.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CartService {
+
     @Autowired
     private CartRepository cartRepository;
-    @Autowired
-    private UserRepository userRepository;
 
-    public Cart createCart(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Cart addToCart(int userId, int productId, int quantity) {
 
-        Cart cart = new Cart();
-        cart.setUser(user);
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUserId(userId);
+                    return cartRepository.save(newCart);
+                });
+
+        for (CartItem item : cart.getItems()) {
+            if (item.getProductId() == productId) {
+                item.setQuantity(item.getQuantity() + quantity);
+                return cartRepository.save(cart);
+            }
+        }
+
+        CartItem cartItem = new CartItem();
+        cartItem.setProductId(productId);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(0.0); // later calculate from Product service
+        cartItem.setCart(cart);
+
+        cart.getItems().add(cartItem);
         return cartRepository.save(cart);
     }
 
-    public Cart getCartByUserId(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return null;
+    public Cart getCartByUser(int userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
+
+    public Cart removeFromCart(int userId, int productId) {
+
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cart.getItems().removeIf(item -> item.getProductId() == productId);
+
+        return cartRepository.save(cart);
     }
 }
-
-

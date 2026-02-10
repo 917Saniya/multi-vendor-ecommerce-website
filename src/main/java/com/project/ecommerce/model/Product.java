@@ -18,8 +18,6 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    // getters & setters
-
     public int getId() {
         return id;
     }

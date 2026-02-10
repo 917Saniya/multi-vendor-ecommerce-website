@@ -3,31 +3,31 @@ package com.project.ecommerce.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "sellers")
 public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String name;
+    private Integer sellerId;
+    private String shopName;
     private String email;
+    private String password;
+    private String status;
 
-    // getters & setters
-
-    public int getId() {
-        return id;
+    public Integer getSellerId() {
+        return sellerId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
     }
 
-    public String getName() {
-        return name;
+    public String getShopName() {
+        return shopName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public String getEmail() {
@@ -36,6 +36,22 @@ public class Seller {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

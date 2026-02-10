@@ -1,38 +1,41 @@
 package com.project.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "cart")
+@Table(name = "carts")
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private int cartId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private int userId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
 
-    public Long getCartId() {
+    // ===== GETTERS & SETTERS =====
+
+    public int getCartId() {
         return cartId;
     }
 
-    public void setCartId(Long cartId) {
+    public void setCartId(int cartId) {
         this.cartId = cartId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public List<CartItem> getItems() {
@@ -43,4 +46,3 @@ public class Cart {
         this.items = items;
     }
 }
-

@@ -1,6 +1,6 @@
 package com.project.ecommerce.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,48 +9,48 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderItemId;
+    private int orderItemId;
 
-    private Integer productId;
-    private Integer quantity;
-    private Double price;
+    private int productId;
+    private int quantity;
+    private double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     // ===== GETTERS & SETTERS =====
 
-    public Integer getOrderItemId() {
+    public int getOrderItemId() {
         return orderItemId;
     }
 
-    public void setOrderItemId(Integer orderItemId) {
+    public void setOrderItemId(int orderItemId) {
         this.orderItemId = orderItemId;
     }
 
-    public Integer getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

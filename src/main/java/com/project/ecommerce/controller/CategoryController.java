@@ -1,58 +1,51 @@
 package com.project.ecommerce.controller;
 
-<<<<<<< HEAD
 import com.project.ecommerce.model.Category;
-import com.project.ecommerce.repository.CategoryRepository;
 import com.project.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-=======
->>>>>>> b5d71d248b6bcc0562807e56da4617f8e4f23d39
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin
 public class CategoryController {
-<<<<<<< HEAD
+
     @Autowired
     private CategoryService categoryService;
 
+    // Create category
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category));
+    public Category createCategory(@RequestBody Category category) {
+        return categoryService.createCategory(category);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable int id) {
-        return categoryService.getCategory(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable int id, @RequestBody Category categoryDetails) {
-        return ResponseEntity.ok(categoryService.updateCategory(id, categoryDetails));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
-=======
-
-    private final List<Map<String, String>> categories = new ArrayList<>();
-
+    // Get all categories
     @GetMapping
-    public List<Map<String, String>> getAllCategories() {
-        return categories;
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 
-    @PostMapping
-    public Map<String, String> createCategory(@RequestBody Map<String, String> category) {
-        categories.add(category);
-        return category;
->>>>>>> b5d71d248b6bcc0562807e56da4617f8e4f23d39
+    // Get category by id
+    @GetMapping("/{id}")
+    public Category getCategory(@PathVariable int id) {
+        return categoryService.getCategoryById(id);
+    }
+
+    // Update category
+    @PutMapping("/{id}")
+    public Category updateCategory(
+            @PathVariable int id,
+            @RequestBody Category category
+    ) {
+        return categoryService.updateCategory(id, category);
+    }
+
+    // Delete category
+    @DeleteMapping("/{id}")
+    public String deleteCategory(@PathVariable int id) {
+        categoryService.deleteCategory(id);
+        return "Category deleted successfully";
     }
 }

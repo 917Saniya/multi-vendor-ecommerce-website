@@ -5,7 +5,6 @@ import com.project.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,49 +16,44 @@ public class OrderService {
     @Autowired
     private CartRepository cartRepository;
 
-    @Autowired
-    private OrderItemRepository orderItemRepository;
+    public Order placeOrder(int userId) {
 
-    public Order placeOrder(Integer userId) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        Cart cart = cartRepository.findByUserId(userId);
-
-        if (cart == null || cart.getItems().isEmpty()) {
-            throw new RuntimeException("Cart is empty or not found");
+        if (cart.getItems().isEmpty()) {
+            throw new RuntimeException("Cart is empty");
         }
 
         Order order = new Order();
         order.setUserId(userId);
 
         double total = 0;
-        List<OrderItem> orderItems = new ArrayList<>();
 
         for (CartItem cartItem : cart.getItems()) {
-
             OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
             orderItem.setProductId(cartItem.getProductId());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(cartItem.getPrice());
+            orderItem.setOrder(order);
 
             order.getItems().add(orderItem);
+            total += cartItem.getPrice() * cartItem.getQuantity();
         }
 
-
         order.setTotalAmount(total);
-        order.setItems(orderItems);
 
-        Order savedOrder = orderRepository.save(order);
-        orderItemRepository.saveAll(orderItems);
-
-        // clear cart
         cart.getItems().clear();
         cartRepository.save(cart);
 
-        return savedOrder;
+        return orderRepository.save(order);
     }
 
-    public List<Order> getOrdersByUser(Integer userId) {
+    public List<Order> getOrdersByUser(int userId) {
         return orderRepository.findByUserId(userId);
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 }

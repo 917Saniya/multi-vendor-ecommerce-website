@@ -1,51 +1,56 @@
 package com.project.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "cart_items")
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int cartItemId;
 
-    private Integer productId;
-    private Integer quantity;
-    private Double price;
+    private int productId;
+    private int quantity;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
-    public Integer getId() {
-        return id;
+    // ===== GETTERS & SETTERS =====
+
+    public int getCartItemId() {
+        return cartItemId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
-    public Integer getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

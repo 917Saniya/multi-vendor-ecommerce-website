@@ -5,10 +5,11 @@ import com.project.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class CategoryService {
+
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -16,14 +17,18 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Optional<Category> getCategory(int id) {
-        return categoryRepository.findById(id);
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
-    public Category updateCategory(int id, Category categoryDetails) {
-        Category category = categoryRepository.findById(id)
+    public Category getCategoryById(int id) {
+        return categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-        category.setCategoryName(categoryDetails.getCategoryName());
+    }
+
+    public Category updateCategory(int id, Category updatedCategory) {
+        Category category = getCategoryById(id);
+        category.setCategoryName(updatedCategory.getCategoryName());
         return categoryRepository.save(category);
     }
 
