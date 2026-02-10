@@ -3,53 +3,52 @@ package com.project.ecommerce.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer orderItemId;
+
+    private Integer productId;
+    private Integer quantity;
+    private Double price;
 
     @ManyToOne
-    private Product product;
-
-    private int quantity;
-
-    private double price;
-
-    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
-    // GETTERS & SETTERS
+    // ===== GETTERS & SETTERS =====
 
-    public int getId() {
-        return id;
+    public Integer getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOrderItemId(Integer orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -61,4 +60,3 @@ public class OrderItem {
         this.order = order;
     }
 }
-

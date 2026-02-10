@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -20,13 +20,14 @@ public class OrderController {
     @Autowired
     private OrderRepository orderRepo;
 
-    @Autowired
-    private ProductRepository productRepo;
-
     @PostMapping("/place/{userId}")
-    public Order placeOrder(@PathVariable int userId) {
+    public Order placeOrder(@PathVariable Integer userId) {
 
         Cart cart = cartRepo.findByUserId(userId);
+
+        if (cart == null || cart.getItems().isEmpty()) {
+            throw new RuntimeException("Cart is empty");
+        }
 
         Order order = new Order();
         order.setUserId(userId);
@@ -34,28 +35,28 @@ public class OrderController {
         double total = 0;
 
         for (CartItem cartItem : cart.getItems()) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setPrice(cartItem.getProduct().getPrice());
 
-            total += cartItem.getQuantity() * cartItem.getProduct().getPrice();
-
-            // Reduce stock
             Product product = cartItem.getProduct();
-            product.setQuantity(product.getQuantity() - cartItem.getQuantity());
-            productRepo.save(product);
 
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProductId(product.getId());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setPrice(product.getPrice());
             orderItem.setOrder(order);
+
             order.getItems().add(orderItem);
+
+            total += product.getPrice() * cartItem.getQuantity();
         }
 
         order.setTotalAmount(total);
 
-        // Clear cart
+        Order savedOrder = orderRepo.save(order);
+
+        // clear cart
         cart.getItems().clear();
         cartRepo.save(cart);
 
-        return orderRepo.save(order);
+        return savedOrder;
     }
 }
