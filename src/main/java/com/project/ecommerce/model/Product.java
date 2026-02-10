@@ -18,20 +18,7 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-
-    // ===== GETTERS & SETTERS =====
+    // getters & setters
 
     public int getId() {
         return id;

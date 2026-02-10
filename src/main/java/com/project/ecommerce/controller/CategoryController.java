@@ -1,26 +1,22 @@
 package com.project.ecommerce.controller;
 
-import com.project.ecommerce.model.Category;
-import com.project.ecommerce.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @PostMapping
-    public Category addCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
-    }
+    private final List<Map<String, String>> categories = new ArrayList<>();
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<Map<String, String>> getAllCategories() {
+        return categories;
+    }
+
+    @PostMapping
+    public Map<String, String> createCategory(@RequestBody Map<String, String> category) {
+        categories.add(category);
+        return category;
     }
 }

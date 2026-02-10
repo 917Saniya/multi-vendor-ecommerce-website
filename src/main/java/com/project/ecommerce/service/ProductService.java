@@ -1,12 +1,9 @@
 package com.project.ecommerce.service;
 
-import com.project.ecommerce.model.Category;
 import com.project.ecommerce.model.Product;
 import com.project.ecommerce.model.Seller;
-import com.project.ecommerce.repository.CategoryRepository;
 import com.project.ecommerce.repository.ProductRepository;
 import com.project.ecommerce.repository.SellerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,18 +11,16 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+    private final SellerRepository sellerRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    public ProductService(ProductRepository productRepository,
+                          SellerRepository sellerRepository) {
+        this.productRepository = productRepository;
+        this.sellerRepository = sellerRepository;
+    }
 
-    @Autowired
-    private SellerRepository sellerRepository;
-
-    // ================= SELLER APIs =================
-
-    public Product addProduct(Product product, int sellerId) {
+    public Product addProduct(int sellerId, Product product) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new RuntimeException("Seller not found"));
 
@@ -33,39 +28,23 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> getProductsBySeller(int sellerId) {
-        Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new RuntimeException("Seller not found"));
-
-        return productRepository.findBySeller(seller);
-    }
-
-    public Product updateProduct(int productId, Product product) {
-        Product existing = productRepository.findById(productId)
+    public Product updateProduct(int productId, Product updatedProduct) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        existing.setName(product.getName());
-        existing.setPrice(product.getPrice());
-        existing.setQuantity(product.getQuantity());
-        existing.setDescription(product.getDescription());
+        product.setName(updatedProduct.getName());
+        product.setPrice(updatedProduct.getPrice());
+        product.setQuantity(updatedProduct.getQuantity());
+        product.setDescription(updatedProduct.getDescription());
 
-        return productRepository.save(existing);
+        return productRepository.save(product);
     }
 
     public void deleteProduct(int productId) {
         productRepository.deleteById(productId);
     }
 
-    // ================= USER APIs =================
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public List<Product> getProductsByCategory(int categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        return productRepository.findByCategory(category);
+    public List<Product> getProductsBySeller(int sellerId) {
+        return productRepository.findBySellerId(sellerId);
     }
 }
