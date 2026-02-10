@@ -7,9 +7,13 @@ import jakarta.persistence.*;
 @Table(name = "categories")
 public class Category {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private int categoryId;
+
 
     private String categoryName;
 
@@ -19,5 +23,9 @@ public class Category {
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+    public Integer getId() {
+        return null;
+    }
 }
 

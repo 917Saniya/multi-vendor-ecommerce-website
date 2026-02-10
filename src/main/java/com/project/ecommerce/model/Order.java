@@ -1,9 +1,10 @@
 package com.project.ecommerce.model;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -11,32 +12,45 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private int id;
 
+    @Column(name = "user_id", nullable = false)
+    private int userId;
+
+    @Column(name = "total_amount", nullable = false)
+    private double totalAmount;
+
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    private double totalAmount;
-    private String status;
-    private LocalDateTime orderDate = LocalDateTime.now();
 
-    // getters & setters
+    @JsonManagedReference
+    private List<OrderItem> items = new ArrayList<>();
 
-    public int getOrderId() {
-        return orderId;
+    // ---------- GETTERS & SETTERS ----------
+
+
+    public int getId() {
+        return id;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public double getTotalAmount() {
@@ -47,20 +61,19 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return status;
+    public User getUser() {
+        return user;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public LocalDateTime getOrderDate() {
-        return orderDate;
+    public List<OrderItem> getItems() {
+        return items;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }
-

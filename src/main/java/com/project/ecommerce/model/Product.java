@@ -3,17 +3,16 @@ package com.project.ecommerce.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private int id;
 
     private String name;
-    private String description;
     private double price;
-    private int stock;
+    private int quantity;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
@@ -23,14 +22,23 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // getters & setters
-
-    public int getProductId() {
-        return productId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+
+    // ===== GETTERS & SETTERS =====
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -41,14 +49,6 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -57,12 +57,20 @@ public class Product {
         this.price = price;
     }
 
-    public int getStock() {
-        return stock;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Seller getSeller() {
@@ -71,13 +79,5 @@ public class Product {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 }

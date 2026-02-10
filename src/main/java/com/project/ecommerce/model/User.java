@@ -19,6 +19,15 @@ public class User {
     private String password;
     private String phone;
     private String address;
+    private String role; // USER, SELLER, ADMIN
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public int getUserId() {
         return userId;
@@ -66,5 +75,8 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setId(int userId) {
     }
 }

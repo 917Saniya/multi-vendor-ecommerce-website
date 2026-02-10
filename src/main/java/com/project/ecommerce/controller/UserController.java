@@ -30,4 +30,9 @@ public class UserController {
     public List<Product> viewAllProducts() {
         return productService.getAllProducts();
     }
+
+    @GetMapping("/products/category/{categoryId}")
+    public List<Product> getProductsByCategory(@PathVariable int categoryId) {
+        return productService.getProductsByCategory(categoryId);
+    }
 }

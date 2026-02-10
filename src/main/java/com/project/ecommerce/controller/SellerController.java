@@ -28,4 +28,16 @@ public class SellerController {
     public List<Product> getSellerProducts(@PathVariable int sellerId) {
         return productService.getProductsBySeller(sellerId);
     }
+
+    @PutMapping("/products/{productId}")
+    public Product updateProduct(@PathVariable int productId,
+                                 @RequestBody Product product) {
+        return productService.updateProduct(productId, product);
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public String deleteProduct(@PathVariable int productId) {
+        productService.deleteProduct(productId);
+        return "Product deleted successfully";
+    }
 }
