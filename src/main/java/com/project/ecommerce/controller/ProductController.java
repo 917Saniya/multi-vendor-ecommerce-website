@@ -14,8 +14,6 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
-    // ✅ ADD PRODUCT (Seller adds product)
     @PostMapping("/seller/{sellerId}")
     public ResponseEntity<Product> addProduct(
             @PathVariable int sellerId,
@@ -25,8 +23,6 @@ public class ProductController {
                 productService.addProduct(sellerId, product)
         );
     }
-
-    // ✅ UPDATE PRODUCT
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable int productId,
@@ -36,15 +32,11 @@ public class ProductController {
                 productService.updateProduct(productId, product)
         );
     }
-
-    // ✅ DELETE PRODUCT
     @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable int productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.ok("Product deleted successfully");
     }
-
-    // ✅ GET PRODUCTS OF SELLER
     @GetMapping("/seller/{sellerId}")
     public ResponseEntity<?> getSellerProducts(@PathVariable int sellerId) {
         return ResponseEntity.ok(
