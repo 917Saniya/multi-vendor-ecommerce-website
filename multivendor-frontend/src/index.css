@@ -1,0 +1,23 @@
+/* Base layout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background-color: #f8fafc; /* Background Light */
+  color: #111827; /* Text Dark */
+}
+
+#root {
+  min-height: 100vh;
+}
