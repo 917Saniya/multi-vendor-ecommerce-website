@@ -39,12 +39,10 @@ public class ProductService {
 
         return productRepository.save(product);
     }
-
     public void deleteProduct(int productId) {
         productRepository.deleteById(productId);
     }
-
     public List<Product> getProductsBySeller(int sellerId) {
-        return productRepository.findBySellerId(sellerId);
+        return productRepository.findBySeller_SellerId(sellerId);
     }
 }
